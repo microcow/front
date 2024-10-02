@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export default function TopNav() {
 
   return (
-    <nav className={`p-3 border-b border-gray-400 fixed top-0 left-0 w-full z-50 bg-white`}>
+    <nav className={`p-3 border-b border-gray-400 fixed top-0 left-0 w-full z-50 bg-white`}> {/*  top-0 left-0 w-full z-50 bg-white : 화면 상단에 고정 */}
       
       <div className="flex justify-end space-x-5 mb-1 font-bold text-xs border-b border-gray-300 pb-1">
         <Link href="/admin" className="text-orange-400">관리자</Link>
