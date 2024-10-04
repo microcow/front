@@ -13,44 +13,6 @@ export default function RootLayout({
       <TopNav/>
       {children}
       <div className="pt-24"> {/* 해당 코드가 없으면 상단고정된 nav에 컨텐츠가 가려짐 */}
-      <p>dㅁㄴㅇㅁㄴㅇ</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
-      <p>d</p>
       </div>
       </body>
     </html>

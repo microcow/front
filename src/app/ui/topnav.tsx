@@ -9,7 +9,7 @@ export default function TopNav() {
       
       <div className="flex justify-end space-x-5 mb-1 font-bold text-xs border-b border-gray-300 pb-1">
         <Link href="/admin" className="text-orange-400">관리자</Link>
-        <Link href="/login" className="text-gray-500">로그인</Link>
+        <Link href="/signin" className="text-gray-500">로그인</Link>
         <Link href="/mypage" className="text-gray-500">마이페이지</Link>
         <Link href="/cart" className="text-gray-500">장바구니</Link>
         <Link href="/order-tracking" className="text-gray-500">주문/배송조회</Link>
