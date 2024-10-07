@@ -11,10 +11,10 @@ export default function RootLayout({
    <html>
      <body className={`${inter.className} antialiased`}>
       <TopNav/>
-      {children}
-      <div className="pt-24"> {/* 해당 코드가 없으면 상단고정된 nav에 컨텐츠가 가려짐 */}
-      </div>
-      </body>
+       {children}
+        <div className="pt-24"> {/* 해당 코드가 없으면 상단고정된 nav에 컨텐츠가 가려짐 */}
+       </div>
+     </body>
     </html>
   )
 }

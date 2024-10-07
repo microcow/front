@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useFormState } from "react-dom";
-// import { registerUserAction } from "@/app/lib/actions";
 import { SubmitButton } from "../custom/SubmitButton";
 import DaumPostcode from 'react-daum-postcode';
+import { SignUpAction } from "@/app/actions/SignUpAction";
 
 import {
   CardTitle,
@@ -17,16 +17,20 @@ import {
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { ZodErrors } from "../custom/ZodErrors";
 
 const INITIAL_STATE = {
   data: null,
 };
 
+
+
 export function SignupForm() {
-  // const [formState, formAction] = useFormState(registerUserAction,INITIAL_STATE);
+  const [formState, formAction] = useFormState(SignUpAction,INITIAL_STATE);
+
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <form className="w-[500px]"> {/* action={formAction} */}
+    <div className="flex justify-center items-center min-h-screen mt-24"> {/* mt-24를 추가하여, error메시지가 출력하더라도 상단바에 form이 가려지지 않도록 */}
+      <form className="w-[500px]" action={formAction}>
         <Card>
           <CardHeader className="space-y-1">
             <CardTitle className="text-3xl font-bold">회원 가입
@@ -36,18 +40,17 @@ export function SignupForm() {
             </CardDescription>
             <div className="w-full border-t border-gray-400 my-4"></div>
           </CardHeader>
-          
           <CardContent className="space-y-2">
             <div className="text-xs text-gray-500 ">사이트 이용정보 입력</div>
             <div className="space-y-2">
               <Input
-                id="username"
-                name="username"
+                id="id"
+                name="id"
                 type="text"
                 placeholder="아이디"
-              />   
+              />
+              <ZodErrors error={formState?.zodErrors?.id} />
             </div>
-
             <div className="space-y-2">
               <Input
                 id="password"
@@ -55,6 +58,7 @@ export function SignupForm() {
                 type="password"
                 placeholder="비밀번호"
               />
+              <ZodErrors error={formState?.zodErrors?.password} />
             </div>
             <div className="space-y-2">
               <Input
@@ -63,6 +67,7 @@ export function SignupForm() {
                 type="password"
                 placeholder="비밀번호 확인"
               />
+              <ZodErrors error={formState?.zodErrors?.password} />
             </div>
             
             <div className="space-y-4">
@@ -76,28 +81,29 @@ export function SignupForm() {
                 name="name"
                 type="name"
                 placeholder="이름"
-              />     
+              />
+              <ZodErrors error={formState?.zodErrors?.name} />
             </div>
             <div className="flex space-x-1">
               <Input
-                id="phone1"
-                name="phone1"
-                type="phone"
+                id="number1"
+                name="number1"
+                type="number"
                 placeholder="연락처"
               />
               <div className="text-lg text-gray-500">-</div>
               <Input
-                id="phone2"
-                name="phone2"
-                type="phone"
-                
+                id="number2"
+                name="number2"
+                type="number"
               />
               <div className="text-lg text-gray-500">-</div>
               <Input
-                id="phone3"
-                name="phone3"
-                type="phone"
+                id="number3"
+                name="number3"
+                type="number"
               />
+             <ZodErrors error={formState?.zodErrors?.number} />
             </div>
             <div className="space-y-2">
               <Input
@@ -105,32 +111,32 @@ export function SignupForm() {
                 name="email"
                 type="email"
                 placeholder="이메일(email@email.com)"
-              />     
+              />
+              <ZodErrors error={formState?.zodErrors?.email} /> 
             </div>
             <div className="flex space-x-2">
+             <div className="flex flex-col w-5/6"> {/* Input과 ZodErrors를 세로로 배치 */}
               <Input
                 id="adress"
                 name="adress"
                 type="text"
                 placeholder="주소"
-              />     
-              <button
-              type="button"
-              className="px-2 py-1 bg-black text-white text-xs w-1/6"
-            >
-              주소검색
-            </button>
+               />
+               <ZodErrors error={formState?.zodErrors?.adress} /> {/* Input 아래로 에러 메시지 배치 */}
+             </div>
+             <button
+               type="button"
+               className="px-2 py-1 bg-black text-white text-xs w-1/6">
+                주소검색
+              </button>
             </div>
-            
-              
-            
           </CardContent>
           <CardFooter className="flex flex-col">
-           <SubmitButton className="w-full" text="Sign Up" loadingText="Loading" />
+           <SubmitButton className="w-full" text="회원가입" loadingText="처리 중입니다." />
           </CardFooter>
         </Card>
         <div className="mt-3 text-center text-sm">
-          회원 아이디가 있으신가요?
+            이미 회원 아이디가 있으신가요?
           <Link className="underline ml-2" href="signin">
             로그인
           </Link>
