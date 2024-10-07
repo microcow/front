@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { SubmitButton } from "../custom/SubmitButton";
-import DaumPostcode from 'react-daum-postcode';
 import { SignUpAction } from "@/app/actions/SignUpAction";
 
 import {
@@ -22,8 +21,6 @@ import { ZodErrors } from "../custom/ZodErrors";
 const INITIAL_STATE = {
   data: null,
 };
-
-
 
 export function SignupForm() {
   const [formState, formAction] = useFormState(SignUpAction,INITIAL_STATE);
@@ -126,7 +123,8 @@ export function SignupForm() {
              </div>
              <button
                type="button"
-               className="px-2 py-1 bg-black text-white text-xs w-1/6">
+               className="px-2 py-1 bg-black text-white text-xs w-1/6"
+               >
                 주소검색
               </button>
             </div>

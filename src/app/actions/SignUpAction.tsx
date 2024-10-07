@@ -20,7 +20,7 @@ const config = {
     .min(3, { message: "아이디는 3글자 이상이어야 합니다." })
     .max(20, { message: "아이디는 20글자 이하여야 합니다." }),
   name: z.string()
-    .min(3, { message: "이름은 3글자 이상이어야 합니다." })
+    .min(2, { message: "이름은 2글자 이상이어야 합니다." })
     .max(20, { message: "이름은 20글자 이하여야 합니다." }),
   password: z.string()
     .min(6, { message: "비밀번호는 6글자 이상이어야 합니다." })
@@ -30,8 +30,7 @@ const config = {
   email: z.string().email({ message: "올바른 이메일 주소를 입력해주세요." })
   .optional().default('not@email.com'),
   number: z.string() // formData는 가져온 숫자를 문자열로 변환하기에 z.string()으로 처리
-    .min(3, { message: "연락처는 3글자 이상이어야 합니다." })
-    .max(15, { message: "연락처는 10글자 이하여야 합니다." }),
+    .min(3, { message: "연락처를 입력해주세요." })
 });
 
  /* 회원가입 action */
@@ -41,7 +40,7 @@ export async function SignUpAction(prevState: any, formData: FormData) {
   const number1 = formData.get("number1") as string | null;
   const number2 = formData.get("number2") as string | null;
   const number3 = formData.get("number3") as string | null;
-  const number = number1 && number2 && number3 ? number1 + number2 + number3 : null;
+  const number = number1 && number2 && number3 ? number1 + number2 + number3 : "";
 
   // zod 검사
   const validatedFields = schemaRegister.safeParse({
