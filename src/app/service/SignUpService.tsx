@@ -1,7 +1,6 @@
 const baseUrl = "http://localhost:8080";
 
 export async function SignUpService(userData: any) {
-    console.log(userData, "유저데이터")
 
   const url = new URL("/api/SignUp", baseUrl);
   try {
@@ -18,9 +17,14 @@ export async function SignUpService(userData: any) {
       const contentType = response.headers.get("Content-Type");
       if (contentType && contentType.includes("application/json")) {
         return await response.json();
+        
+      } 
+      
+      else if (contentType && contentType.includes("text/plain")) {
+        return await response.text();
       } else {
         return response;
-     }
+      }
     
     } catch (error) {
     console.error("Registration Service Error:", error);

@@ -16,7 +16,7 @@ const config = {
 
  /* zod 설정 */
  const schemaRegister = z.object({
-  id: z.string()
+  username: z.string()
     .min(3, { message: "아이디는 3글자 이상이어야 합니다." })
     .max(20, { message: "아이디는 20글자 이하여야 합니다." }),
   name: z.string()
@@ -44,7 +44,7 @@ export async function SignUpAction(prevState: any, formData: FormData) {
 
   // zod 검사
   const validatedFields = schemaRegister.safeParse({
-    id: formData.get("id"),
+    username: formData.get("id"), // 서버로 보낼 때 id 값을 username이라는 값으로 사용하기 위해 username 객체에 매치
     password: formData.get("password"),
     email: formData.get("email"),
     name: formData.get("name"),
@@ -62,19 +62,22 @@ export async function SignUpAction(prevState: any, formData: FormData) {
   const responseData = await SignUpService(validatedFields.data);
 
   if (!responseData) {
-    console.log('here error', '서버 응답 없음')
+    console.log('server error', '서버 응답 없음')
     return {
       ...prevState,
       message: "Ops! Something went wrong. Please try again.",
     };
   }
 
-  if (responseData.message) {
-    console.log('here error2', '서버 응답은 있지만 error발생')
+  else if (responseData.message) {
+    console.log('error', '서버 응답은 있지만 error발생')
     return {
       ...prevState,
       message: responseData.message,
     };
   }
-
+  return {
+    ...prevState,
+    message: responseData,
+  };
 }

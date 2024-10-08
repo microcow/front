@@ -17,6 +17,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ZodErrors } from "../custom/ZodErrors";
+import { ResultMessage } from "../custom/ResultMessage";
 
 const INITIAL_STATE = {
   data: null,
@@ -59,8 +60,8 @@ export function SignupForm() {
             </div>
             <div className="space-y-2">
               <Input
-                id="password"
-                name="password"
+                id="checkpassword"
+                name="checkpassword"
                 type="password"
                 placeholder="비밀번호 확인"
               />
@@ -145,6 +146,7 @@ export function SignupForm() {
           </Link>
         </div>
       </form>
+      <ResultMessage resultmessage={formState?.message} />
     </div>
   );
 }
