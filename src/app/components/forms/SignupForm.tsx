@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { SubmitButton } from "../custom/SubmitButton";
-import { SignUpAction } from "@/app/actions/SignUpAction";
+import { SignUpAction, IdCheckAction } from "@/app/actions/SignUpAction";
 
 import {
   CardTitle,
@@ -14,17 +14,48 @@ import {
   Card,
 } from "@/components/ui/card";
 
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ZodErrors } from "../custom/ZodErrors";
 import { ResultMessage } from "../custom/ResultMessage";
+import { useState } from "react";
 
 const INITIAL_STATE = {
   data: null,
 };
 
+
 export function SignupForm() {
+
   const [formState, formAction] = useFormState(SignUpAction,INITIAL_STATE);
+
+  // 유저가 입력한 아이디값 실시간 저장 (onChange)
+  const [InputId, setInputId] = useState("");
+  const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputId(e.target.value);
+  };
+
+  // 아이디 중복확인 로직
+  const [IdCheckResult, setIdCheckResult] = useState("");
+  const handleIdCheck = async () => {
+    const result = await IdCheckAction(InputId);
+    if (result.message) {
+    setIdCheckResult(result.message);
+  } else {
+    setIdCheckResult("오류가 발생했습니다. 다시 시도해주세요");
+  }
+    }
+  const messageStyles: Record<string, string> = { // Record<string, string>: key 값이 String임을 명시적으로 정의
+    "아이디는 3글자 이상 20글자 이하입니다.": "text-red-400 text-xs",
+    "이미 존재하는 아이디입니다.": "text-red-400 text-xs",
+    "사용가능 한 아이디입니다.": "text-green-400 text-xs",
+  };
+
+  // 아이디 중복확인 여부 (useState 훅 사용하는 걸로 바꾸기)
+  let IdCheckComplete: boolean
+    if(IdCheckResult == "사용가능 한 아이디입니다."){
+      IdCheckComplete = true;
+    }
+    else IdCheckComplete = false;
 
   return (
     <div className="flex justify-center items-center min-h-screen mt-24"> {/* mt-24를 추가하여, error메시지가 출력하더라도 상단바에 form이 가려지지 않도록 */}
@@ -40,15 +71,33 @@ export function SignupForm() {
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="text-xs text-gray-500 ">사이트 이용정보 입력</div>
-            <div className="space-y-2">
-              <Input
-                id="id"
-                name="id"
-                type="text"
-                placeholder="아이디"
-              />
-              <ZodErrors error={formState?.zodErrors?.id} />
-            </div>
+             <div className="space-y-2">
+              <div className="flex space-x-2">
+                <Input
+                  id="id"
+                  name="id"
+                  type="text"
+                  placeholder="아이디"
+                  onChange={handleInputId}
+                />
+                <button
+                  type="button"
+                  className="rounded-md px-2 py-1 bg-black text-white text-xs w-1/6"
+                  id={InputId}
+                  onClick={handleIdCheck}
+                >
+                중복확인
+                </button>
+              </div>
+              <div>
+                 {IdCheckResult && (
+                  <div className={messageStyles[IdCheckResult] || "text-black text-xs"}>
+                   {IdCheckResult}
+                  </div>
+                 )}
+                </div>
+              {/* <ZodErrors error={formState?.zodErrors?.id} />  id는 중복확인을 별도로 하고 있기에 별 문제 없으면 해당 코드 지울것*/}
+             </div>
             <div className="space-y-2">
               <Input
                 id="password"
@@ -115,16 +164,16 @@ export function SignupForm() {
             <div className="flex space-x-2">
              <div className="flex flex-col w-5/6"> {/* Input과 ZodErrors를 세로로 배치 */}
               <Input
-                id="adress"
-                name="adress"
+                id="address"
+                name="address"
                 type="text"
                 placeholder="주소"
                />
-               <ZodErrors error={formState?.zodErrors?.adress} /> {/* Input 아래로 에러 메시지 배치 */}
+               <ZodErrors error={formState?.zodErrors?.address} /> {/* Input 아래로 에러 메시지 배치 */}
              </div>
              <button
                type="button"
-               className="px-2 py-1 bg-black text-white text-xs w-1/6"
+               className="rounded-md px-2 py-1 bg-black text-white text-xs w-1/6"
                >
                 주소검색
               </button>
@@ -132,6 +181,7 @@ export function SignupForm() {
           </CardContent>
           <CardFooter className="flex flex-col">
            <SubmitButton className="w-full" text="회원가입" loadingText="처리 중입니다." />
+           <ResultMessage resultmessage={formState?.message} />
           </CardFooter>
         </Card>
         <div className="mt-3 text-center text-sm">
@@ -146,7 +196,6 @@ export function SignupForm() {
           </Link>
         </div>
       </form>
-      <ResultMessage resultmessage={formState?.message} />
     </div>
   );
 }
