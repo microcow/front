@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/dashboard/createboard"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/dashboard/createboard", "src/app/components/custom/AdressInput.jsx", "src/app/components/custom/AdressInput.jsx"],
   "exclude": ["node_modules"]
 }
