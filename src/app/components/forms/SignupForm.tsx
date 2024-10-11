@@ -17,21 +17,27 @@ import {
 import { Input } from "@/components/ui/input";
 import { ZodErrors } from "../custom/ZodErrors";
 import { ResultMessage } from "../custom/ResultMessage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const INITIAL_STATE = {
   data: null,
 };
 
-
 export function SignupForm() {
 
   const [formState, formAction] = useFormState(SignUpAction,INITIAL_STATE);
 
-  // 유저가 입력한 아이디값 실시간 저장 (onChange)
+  // 유저가 입력한 아이디값 실시간 저장 (onChange, 입력을 멈춘 시점에서 1초 후 값 전송)
+  let debounceTimer: NodeJS.Timeout | null = null;
   const [InputId, setInputId] = useState("");
   const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputId(e.target.value);
+    const value = e.target.value;
+    if (debounceTimer) {
+      clearTimeout(debounceTimer); // 이전 입력에 대한 타이머가 제거되어 새롭게 시작(마지막 입력이 1초를 경과할 경우에만 실행됨)
+    }
+    debounceTimer = setTimeout(() => {
+     setInputId(value);
+    }, 500);
   };
 
   // 아이디 중복확인 로직
@@ -40,26 +46,39 @@ export function SignupForm() {
     const result = await IdCheckAction(InputId);
     if (result.message) {
     setIdCheckResult(result.message);
-  } else {
+    } else {
     setIdCheckResult("오류가 발생했습니다. 다시 시도해주세요");
-  }
     }
+  }
+
+  // 중복확인 텍스트 css 설정
   const messageStyles: Record<string, string> = { // Record<string, string>: key 값이 String임을 명시적으로 정의
     "아이디는 3글자 이상 20글자 이하입니다.": "text-red-400 text-xs",
     "이미 존재하는 아이디입니다.": "text-red-400 text-xs",
     "사용가능 한 아이디입니다.": "text-green-400 text-xs",
   };
 
-  // 아이디 중복확인 여부 (useState 훅 사용하는 걸로 바꾸기)
-  let IdCheckComplete: boolean
-    if(IdCheckResult == "사용가능 한 아이디입니다."){
-      IdCheckComplete = true;
+  // 아이디 중복확인 여부
+  const [IdCheckComplete, setIdCheckComplete] = useState(false);
+  useEffect(() => {
+    if(IdCheckResult === "사용가능 한 아이디입니다.") {
+      setIdCheckComplete(true);
+    } else {
+      setIdCheckComplete(false);
     }
-    else IdCheckComplete = false;
+  }, [IdCheckResult]);
+
+  // 아이디 중복확인 실패 후 회원가입 버튼 클릭 시 로직
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (!IdCheckComplete) {
+      e.preventDefault();
+      alert("아이디 중복확인이 필요합니다.");
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen mt-24"> {/* mt-24를 추가하여, error메시지가 출력하더라도 상단바에 form이 가려지지 않도록 */}
-      <form className="w-[500px]" action={formAction}>
+      <form className="w-[500px]" action={formAction} onSubmit={handleSubmit}>
         <Card>
           <CardHeader className="space-y-1">
             <CardTitle className="text-3xl font-bold">회원 가입
@@ -81,7 +100,7 @@ export function SignupForm() {
                   onChange={handleInputId}
                 />
                 <button
-                  type="button"
+                  type="button" // type을 submit으로 해서 id 필드의 값을 제출하지 않고, onChange로 값을 사용하는 이유는 해당 버튼의 타입이 submit이 될 경우 form 전체가 제출되기 때문
                   className="rounded-md px-2 py-1 bg-black text-white text-xs w-1/6"
                   id={InputId}
                   onClick={handleIdCheck}
@@ -96,7 +115,6 @@ export function SignupForm() {
                   </div>
                  )}
                 </div>
-              {/* <ZodErrors error={formState?.zodErrors?.id} />  id는 중복확인을 별도로 하고 있기에 별 문제 없으면 해당 코드 지울것*/}
              </div>
             <div className="space-y-2">
               <Input
@@ -150,8 +168,8 @@ export function SignupForm() {
                 name="number3"
                 type="number"
               />
-             <ZodErrors error={formState?.zodErrors?.number} />
             </div>
+            <ZodErrors error={formState?.zodErrors?.number} />
             <div className="space-y-2">
               <Input
                 id="email"
@@ -173,7 +191,7 @@ export function SignupForm() {
              </div>
              <button
                type="button"
-               className="rounded-md px-2 py-1 bg-black text-white text-xs w-1/6"
+               className="rounded-md bg-black text-white text-xs w-1/6"
                >
                 주소검색
               </button>
