@@ -5,11 +5,20 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { SignInService } from "../service/SignInService";
 
- /* cookie config 설정 */
+ /* access cookie config 설정 */
 const config = { 
     maxAge: 60 * 60 * 24 * 7, // 1 week
     path: "/",
-    domain: process.env.HOST ?? "13.124.150.61",
+    domain: process.env.HOST ?? "localhost",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production" && process.env.PROTOCOL === "https",
+  };
+
+  /* refreshToken config 설정 */
+  const refreshTokenConfig = {
+    maxAge: 60 * 60 * 24 * 30,
+    path: "/api/refreshToken", // 리프레시 토큰을 사용할 경로로 제한
+    domain: process.env.HOST ?? "localhost",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production" && process.env.PROTOCOL === "https",
   };
@@ -45,6 +54,8 @@ export async function SignInAction(prevState: any, formData: FormData) {
   // 서버통신 함수에 값 전달(zod 통과 시)
   const responseData = await SignInService(validatedFields.data);
 
+  console.log(responseData, "데이터")
+
   // 서버응답 실패로직
   if (!responseData) {
     console.log('server error', '서버 응답 없음')
@@ -66,6 +77,8 @@ export async function SignInAction(prevState: any, formData: FormData) {
   // 토큰 return 시 쿠키 세팅
   else if(responseData.accessToken){
    cookies().set("jwt", responseData.accessToken, config);
+   cookies().set("refreshToken", responseData.token, refreshTokenConfig);
+   console.log(cookies().get('refreshToken'), "리프레쉬토큰")
    redirect("/");
   }
 }
