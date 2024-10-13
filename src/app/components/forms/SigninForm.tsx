@@ -15,16 +15,17 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useFormState } from "react-dom";
 import { Button } from "@/components/ui/button";
+import { SignInAction } from "@/app/actions/SignInAction";
 
 const INITIAL_STATE = {
   data: null,
 };
 
 export function SigninForm() {
- // const [formState, formAction] = useFormState(loginUserAction,INITIAL_STATE);
+ const [formState, formAction] = useFormState(SignInAction,INITIAL_STATE);
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <form className="w-[500px]"> {/*action={formAction}>*/}
+      <form className="w-[500px]" action={formAction}>
         <Card>
           <CardHeader className="space-y-1">
             <CardTitle className="text-3xl font-bold">회원 로그인</CardTitle>
@@ -36,8 +37,8 @@ export function SigninForm() {
             <div className="space-y-2">
               <Label htmlFor="userid">회원 아이디</Label>
               <Input
-                id="userid"
-                name="userid"
+                id="id"
+                name="id"
                 type="text"
                 placeholder="아이디"
                 required

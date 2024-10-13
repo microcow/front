@@ -33,7 +33,7 @@ export function SignupForm() {
   const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (debounceTimer) {
-      clearTimeout(debounceTimer); // 이전 입력에 대한 타이머가 제거되어 새롭게 시작(마지막 입력이 1초를 경과할 경우에만 실행됨)
+      clearTimeout(debounceTimer); // 이전 입력에 대한 타이머가 제거되어 새롭게 시작(마지막 입력이 0.2초를 경과할 경우에만 실행됨)
     }
     debounceTimer = setTimeout(() => {
      setInputId(value);
@@ -51,13 +51,6 @@ export function SignupForm() {
     }
   }
 
-  // 중복확인 텍스트 css 설정
-  const messageStyles: Record<string, string> = { // Record<string, string>: key 값이 String임을 명시적으로 정의
-    "아이디는 3글자 이상 20글자 이하입니다.": "text-red-400 text-xs",
-    "이미 존재하는 아이디입니다.": "text-red-400 text-xs",
-    "사용가능 한 아이디입니다.": "text-green-400 text-xs",
-  };
-
   // 아이디 중복확인 여부
   const [IdCheckComplete, setIdCheckComplete] = useState(false);
   useEffect(() => {
@@ -67,6 +60,13 @@ export function SignupForm() {
       setIdCheckComplete(false);
     }
   }, [IdCheckResult]);
+
+  // 중복확인 텍스트 css 설정
+  const messageStyles: Record<string, string> = { // Record<string, string>: key 값이 String임을 명시적으로 정의
+    "아이디는 3글자 이상 20글자 이하입니다.": "text-red-400 text-xs",
+    "이미 존재하는 아이디입니다.": "text-red-400 text-xs",
+    "사용가능 한 아이디입니다.": "text-green-400 text-xs",
+  };
 
   // 아이디 중복확인 실패 후 회원가입 버튼 클릭 시 로직
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
