@@ -1,17 +1,23 @@
 const baseUrl = "http://localhost:8080";
 
-export async function SignInService(userData: any) {
+export async function refreshTokenService(refreshTokenValue: String | undefined) {
 
-  const url = new URL("/api/SignIn", baseUrl);
+  // refreshTokenValue이 없을 경우 처리
+  if (!refreshTokenValue) { 
+    console.error("Refresh token is undefined");
+    return null;
+  }
+
+  const url = new URL("/api/refreshToken", baseUrl);
+  
   try {
     const response = await fetch(url, { 
-    
+
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(userData),
-      cache: "no-cache",
+      body: JSON.stringify({ token : refreshTokenValue }),
     });
 
       const contentType = response.headers.get("Content-Type");
@@ -32,4 +38,5 @@ export async function SignInService(userData: any) {
     console.error("Registration Service Error:", error);
     return null;
   }
+
 }

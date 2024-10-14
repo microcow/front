@@ -15,14 +15,16 @@ export async function SignUpService(userData: any) {
     });
 
       const contentType = response.headers.get("Content-Type");
+      
       if (contentType && contentType.includes("application/json")) {
         return await response.json();
-        
       } 
       
       else if (contentType && contentType.includes("text/plain")) {
         return await response.text();
-      } else {
+      } 
+      
+      else {
         return response;
       }
     
