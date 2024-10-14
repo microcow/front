@@ -1,18 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { IdCheckService, SignUpService } from "../service/SignUpService";
-
- /* cookie config 설정 */
-const config = { 
-    maxAge: 60 * 60 * 24 * 7, // 1 week
-    path: "/",
-    domain: process.env.HOST ?? "13.124.150.61",
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production" && process.env.PROTOCOL === "https",
-  };
 
 /* 회원가입 action */
 export async function SignUpAction(prevState: any, formData: FormData) {

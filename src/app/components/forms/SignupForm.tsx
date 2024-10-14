@@ -27,7 +27,7 @@ export function SignupForm() {
 
   const [formState, formAction] = useFormState(SignUpAction,INITIAL_STATE);
 
-  // 유저가 입력한 아이디값 실시간 저장 (onChange, 입력을 멈춘 시점에서 0.2초 후 값 전송)
+  // 유저가 입력한 아이디값 실시간 저장 (onChange 사용, 입력을 멈춘 시점에서 0.2초 후 값 전송)
   let debounceTimer: NodeJS.Timeout | null = null;
   const [InputId, setInputId] = useState("");
   const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -76,6 +76,6 @@ export async function SignInAction(prevState: any, formData: FormData) {
   else if(responseData.accessToken){
    cookies().set("jwt", responseData.accessToken, config);
    cookies().set("refreshToken", responseData.token, refreshTokenConfig);
-   redirect("/");
+   redirect("/"); // 서버측에서 redirect로 / 경로에 redirect 시 페이지가 리랜더링되지 않음 *수정 필요
   }
 }
