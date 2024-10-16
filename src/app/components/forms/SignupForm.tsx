@@ -77,7 +77,7 @@ export function SignupForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen mt-24"> {/* mt-24를 추가하여, error메시지가 출력하더라도 상단바에 form이 가려지지 않도록 */}
+    <div className="flex justify-center items-center min-h-screen"> {/* mt-24를 추가하여, error메시지가 출력하더라도 상단바에 form이 가려지지 않도록 */}
       <form className="w-[500px]" action={formAction} onSubmit={handleSubmit}>
         <Card>
           <CardHeader className="space-y-1">

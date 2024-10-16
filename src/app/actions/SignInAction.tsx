@@ -4,27 +4,17 @@ import { z } from "zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { SignInService } from "../service/SignInService";
+import { getConfig, getRefreshTokenConfig } from "./CookiesAction";
 
- /* access cookie config 설정 */
-const config = { 
-  maxAge: 60 * 5, // 5분 (300초)
-    path: "/",
-    domain: process.env.HOST ?? "localhost",
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production" && process.env.PROTOCOL === "https",
-  };
-
-  /* refreshToken config 설정 */
-  const refreshTokenConfig = {
-    maxAge: 60 * 60 * 24 * 30,
-    path: "/", // path: "/api/refreshToken", // 리프레시 토큰을 사용할 경로로 제한 (해당 경로외 접근 불가, 개발을 위해 path를 "/" 로 임시 설정 )
-    domain: process.env.HOST ?? "localhost",
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production" && process.env.PROTOCOL === "https",
-  };
 
 /* 로그인 action */
 export async function SignInAction(prevState: any, formData: FormData) {
+
+  /* access cookie config 설정 */
+  const config = await getConfig();
+
+  /* refreshToken config 설정 */
+  const refreshTokenConfig = await getRefreshTokenConfig();
 
   // zod 설정 
   const schemaRegister = z.object({

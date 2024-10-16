@@ -40,9 +40,8 @@ export default function TopNav() {
   };
 
   return (
-    <nav className={`p-3 border-b border-gray-400 fixed top-0 left-0 w-full z-50 bg-white`}> {/*  top-0 left-0 w-full z-50 bg-white : 화면 상단에 고정 */}
-      
-      <div className="flex justify-end space-x-5 mb-1 font-bold text-xs border-b border-gray-300 pb-1">
+    <nav> 
+      <div className="flex justify-end space-x-5 mb-1 font-bold text-xs container mx-auto">
         <Link href="/admin" className="text-orange-400">관리자</Link>
         {LoggedIn === "true" && (
          <button onClick={handleLogout} className="text-gray-500">로그아웃</button>
@@ -55,8 +54,9 @@ export default function TopNav() {
         <Link href="/order-tracking" className="text-gray-500">주문/배송조회</Link>
         <Link href="/customer-service" className="text-gray-500">고객센터</Link>
       </div>
+      <div className="border-b border-gray-300 pb-0"></div>
 
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center container mx-auto">
         <div>
          <Link href="/">
           <img src="/podo.png" alt="Podo Mall Logo" className="h-16" /> {/* src/app/public 폴더에 이미지를 넣고 public폴더는 루트경로인 "/" 로 인식됨" */}
@@ -74,6 +74,7 @@ export default function TopNav() {
           <Button className="hover:bg-purple-500 hover:text-black font-bold bg-purple-500 text-white">검색</Button>
         </div>
       </div>
+      <div className="border-b border-gray-300 pb-1"></div>
     </nav>
   );
 }

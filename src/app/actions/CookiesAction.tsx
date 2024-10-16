@@ -12,14 +12,22 @@ import { refreshTokenService, DeleterefreshTokenService } from "../service/refre
     secure: process.env.NODE_ENV === "production" && process.env.PROTOCOL === "https",
   };
 
+  export async function getConfig(){
+    return config;
+  }
+
   /* refreshToken config 설정 */
   const refreshTokenConfig = {
-    maxAge: 60 * 60 * 24 * 30,
-    path: "/", // path: "/api/refreshToken", // 리프레시 토큰을 사용할 경로로 제한 (해당 경로외 접근 불가, 개발을 위해 path를 "/" 로 임시 설정 )
+    maxAge: 60 * 60 * 24 * 30 + 9 * 3600, // 30일 + 9시간 (UTC+9) 추가
+    path: "/", // path: "/api/refreshToken", // 리프레시 토큰을 사용할 경로로 제한 (해당 경로외 접근 불가, 개발을 위해 path를 "/" 로 임시 설정)
     domain: process.env.HOST ?? "localhost",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production" && process.env.PROTOCOL === "https",
   };
+
+  export async function getRefreshTokenConfig(){
+    return refreshTokenConfig;
+  }
 
   /* 쿠키 체크 액션 */
 export async function CheckCookiesAction() {
