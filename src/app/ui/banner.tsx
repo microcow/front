@@ -3,7 +3,7 @@
 export default function Banner({ onClose }: { onClose: () => void }) {
 
   const handleBannerClose = () => {
-      onClose(); // 호출자에게 알림 (handleBannerClose 함수 실행)
+      onClose(); // 호출자에게 알림 (RootLayout.tsx의 handleBannerClose 함수 실행)
   };
 
   return (
