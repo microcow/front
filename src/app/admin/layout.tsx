@@ -51,7 +51,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link href="#" className="hover:underline">
                 관리자홈
               </Link>
-              <Link href="#" className="hover:underline">
+              <Link href="/" className="hover:underline">
                 쇼핑몰
               </Link>
               <button onClick={handleLogout} className="text-red-500 hover:underline">
