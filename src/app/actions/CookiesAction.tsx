@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { refreshTokenService, DeleterefreshTokenService } from "../service/refreshTokenService";
+import { getAuthByCookieService } from "../service/CookiesService";
 
    /* access cookie config 설정 */
   const config = { 
@@ -81,4 +82,18 @@ export async function deleteCookies() {
       ...refreshTokenConfig,
       maxAge: 0, 
     });
+}
+
+  /* 쿠키로 권한 확인 */
+  export async function getAuthByCookieAction() {
+
+    const cookieState = await CheckCookiesAction();
+
+    if (cookieState === "true"){
+       const cookie = cookies().get("jwt");
+        if(cookie?.value){
+           const Result = await getAuthByCookieService(cookie.value);
+     }
+    }
+    else return ("/login")
 }
