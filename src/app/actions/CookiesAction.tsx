@@ -33,8 +33,8 @@ import { getAuthByCookieService } from "../service/CookiesService";
   /* 쿠키 체크 액션 */
 export async function CheckCookiesAction() {
 
-    const jwtToken = cookies().get("jwt")
-    const refreshToken = cookies().get("refreshToken")
+    const jwtToken = await cookies().get("jwt")
+    const refreshToken = await cookies().get("refreshToken")
 
     // jwt 액세스 쿠키가 유효할 경우
     if(jwtToken){ 
