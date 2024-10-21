@@ -4,20 +4,7 @@ import Link from "next/link";
 import { useFormState } from "react-dom";
 import { SubmitButton } from "../custom/SubmitButton";
 import { SignUpAction, IdCheckAction } from "@/app/actions/SignUpAction";
-
-import {
-  CardTitle,
-  CardDescription,
-  CardHeader,
-  CardContent,
-  CardFooter,
-  Card,
-} from "@/components/ui/card";
-
-import { Input } from "@/components/ui/input";
-import { ZodErrors } from "../custom/ZodErrors";
-import { ResultMessage } from "../custom/ResultMessage";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const INITIAL_STATE = {
   data: null,
@@ -131,10 +118,10 @@ export function UserEditForm() {
             </div>
             
             <div>
-                <label className="block text-sm font-medium text-gray-700">레벨</label>
+                <label className="block text-sm font-medium text-gray-700">권한</label>
                 <select className="w-1/4 mt-1 p-2 border rounded-md">
-                    <option>[9] 일반회원</option>
-                    <option>[8] VIP회원</option>
+                    <option>[1] 일반회원</option>
+                    <option>[2] 관리자</option>
                 </select>
             </div>
             <div className="flex justify-center">

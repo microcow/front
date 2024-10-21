@@ -71,6 +71,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 회원관리
               </Link>
               <Link href="/admin" className="text-white hover:bg-gray-600 px-3 py-2 rounded-md">
+                상품관리
+              </Link>
+              <Link href="/admin" className="text-white hover:bg-gray-600 px-3 py-2 rounded-md">
+                상품등록
+              </Link>
+              <Link href="/admin" className="text-white hover:bg-gray-600 px-3 py-2 rounded-md">
                 주문관리
               </Link>
             </div>

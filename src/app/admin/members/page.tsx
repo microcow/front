@@ -68,7 +68,7 @@ export default function MembersPage() {
                <td className="border border-gray-300 p-1">
                   <button
                     className="underline hover:cursor-pointer"
-                    onClick={() => openPopup(user.address)}
+                    onClick={() => openPopup(user.address ?? "null")}
                   >
                     확인하기
                   </button>
