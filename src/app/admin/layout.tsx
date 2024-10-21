@@ -4,39 +4,46 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { CheckCookiesAction, deleteCookies } from "../actions/CookiesAction";
+import CheckAuthAction from "../actions/CheckAuthAction";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
- /* 쿠키(로그인 사실)확인 */
- const [LoggedIn, setLoggedIn] = useState("null");
 
- useEffect(() => {
-   const checkLoginStatus = async () => {
-     const result = await CheckCookiesAction();
 
-     if (result === "true") {
-       setLoggedIn("true");
-     } 
-     else if(result === "refreshToken error"){
-       setLoggedIn("refreshToken error");
-     }
-     else if(result === "expired") {
-       setLoggedIn("expired");
-     }
-   };
-   checkLoginStatus();
- }, []);
- 
- // 로그인 상태가 확인될 때까지 렌더링하지 않음 (사이드 이펙트방지. but 렌더링 딜레이가 체감됨 *수정 필요)
- if (LoggedIn === "null") {
-   return null;
- }
+   /** 권한 확인 로직 */
+  const [isLoading, setIsLoading] = useState(false);
 
- // 쿠키 삭제 함수 (deleteCookies 함수는 "use server" 함수이기에 직접 호출이 불가하여 handleLogout 함수를 통해 간접적으로 호출)
+  useEffect(() => {
+    const checkauthStatus = async () => {
+      const CheckAuth = await CheckAuthAction();
+
+      if (CheckAuth === "로그인이 필요합니다."){
+        alert(CheckAuth);
+        window.location.href = "/signin";
+      }
+
+      else if (CheckAuth !== "권한이 확인되었습니다."){
+        alert(CheckAuth);
+        window.location.href = "/";
+      }
+      else {
+        setIsLoading(true); // 권한 확인 완료
+      }
+    };
+    checkauthStatus();
+  }, []);
+
+  if (!isLoading) { // 확인 전까지 null을 return
+    return null;
+  }
+
+
+  /** 쿠키 삭제(로그아웃) 함수 */
  const handleLogout = async () => {
    await deleteCookies();
    alert("로그아웃 되었습니다.")
    window.location.href = "/";
  };
+ 
 
  return (
   <html lang="ko">
@@ -62,6 +69,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="bg-gray-700 flex space-x-6 px-4 py-1 text-s">
               <Link href="/admin/members" className="text-white hover:bg-gray-600 px-3 py-2 rounded-md">
                 회원관리
+              </Link>
+              <Link href="/admin" className="text-white hover:bg-gray-600 px-3 py-2 rounded-md">
+                주문관리
               </Link>
             </div>
         </header>
