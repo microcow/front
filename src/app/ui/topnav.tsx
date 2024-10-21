@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { CheckCookiesAction, deleteCookies } from "../actions/CookiesAction";
-import CheckAuthAction from "../actions/CheckAuthAction";
 
 export default function TopNav() {
 

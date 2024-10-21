@@ -4,12 +4,7 @@ import { cookies } from "next/headers";
 import { CheckCookiesAction } from "./CookiesAction";
 import { CheckAuthService } from "../service/CheckAuthService";
 
-interface auth {
-  authority : string;
-}
-
 /* 권한 확인 컴포넌트 */
-
 export default async function CheckAuthAction() {
 
   const checkCookie = await CheckCookiesAction();

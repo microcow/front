@@ -14,13 +14,6 @@ function Loader({ text }: { readonly text: string }) {
   );
 }
 
-interface SubmitButtonProps {
-  text: string;
-  loadingText: string;
-  className?: string;
-  loading?: boolean;
-}
-
 export function SubmitButton({
   text,
   loadingText,
