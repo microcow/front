@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { readUserListService } from "@/app/service/readUserService";
+import { ReadUserListService } from "@/app/service/ReadUserService";
 import { Button } from "@/components/ui/button";
 import Link from "next/dist/client/link";
 
@@ -13,7 +13,7 @@ export default function MembersPage() {
   useEffect(() => {
     const fetchUserList = async () => {
       try {
-        const data = await readUserListService();
+        const data = await ReadUserListService();
         setUserList(data);
       } catch (error) {
         console.error("Failed to fetch user list:", error);

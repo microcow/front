@@ -13,13 +13,17 @@ interface User {
     accountNonLocked?: boolean;
   }
 
-  interface auth {
+interface auth {
     authority : string;
   }
 
-  interface SubmitButtonProps {
+interface SubmitButtonProps {
     text: string;
     loadingText: string;
     className?: string;
     loading?: boolean;
+  }
+
+interface UserNameProps {
+    username: string;
   }

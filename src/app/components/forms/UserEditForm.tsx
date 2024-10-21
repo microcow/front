@@ -3,32 +3,59 @@
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { SubmitButton } from "../custom/SubmitButton";
-import { SignUpAction, IdCheckAction } from "@/app/actions/SignUpAction";
-import { useState } from "react";
+import { SignUpAction, } from "@/app/actions/SignUpAction";
+import { useEffect, useState, } from "react";
+import CheckAuthAction from "@/app/actions/CheckAuthAction";
+import ReadUserByUsernameAction from "@/app/actions/ReadUserAction";
 
 const INITIAL_STATE = {
   data: null,
 };
 
-export function UserEditForm() {
+export function UserEditForm(username : UserNameProps) {
+    
+    /** 권한 확인 로직 */ 
+    useEffect(() => {
+        const checkauthStatus = async () => {            
+            const CheckAuth = await CheckAuthAction();
 
-  const [formState, formAction] = useFormState(SignUpAction,INITIAL_STATE);
+            if (CheckAuth === "로그인이 필요합니다."){
+                alert(CheckAuth);
+                window.location.href = "/signin";
+            }
 
-  // 유저가 입력한 아이디값 실시간 저장 (onChange 사용, 입력을 멈춘 시점에서 0.2초 후 값 전송)
-  let debounceTimer: NodeJS.Timeout | null = null;
-  const [InputId, setInputId] = useState("");
-  const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (debounceTimer) {
-      clearTimeout(debounceTimer); // 이전 입력에 대한 타이머가 제거되어 새롭게 시작(마지막 입력이 0.2초를 경과할 경우에만 실행됨)
-    }
-    debounceTimer = setTimeout(() => {
-     setInputId(value);
-    }, 200);
-  };
+            else if (CheckAuth !== "권한이 확인되었습니다."){
+                alert(CheckAuth);
+                window.location.href = "/";
+            }
+        };
+         checkauthStatus();
+    }, []);
 
-  return (
-    <form>
+
+    /** username으로 유저 정보 불러오기 */
+    const [user, setUser] = useState<any>(null);
+
+    useEffect(() => {
+        async function fetchUser() {
+          try {
+            const userData = await ReadUserByUsernameAction(username);
+            setUser(userData);
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+            alert("쿠키 정보를 불러오지 못했습니다. 다시 로그인해주세요.");
+            window.location.href = "/signin";
+          }
+        }
+        
+        fetchUser();
+    }, [username]);
+    
+    /** 회원정보 수정 page*/
+    const [formState, formAction] = useFormState(SignUpAction,INITIAL_STATE);
+    
+    return (
+    <form action={formAction}>
         <div className="max-w-2xl mx-auto bg-white shadow-md rounded-lg p-8">
             <h2 className="text-lg font-semibold mb-4 border-b pb-2">
                 회원정보
@@ -39,7 +66,7 @@ export function UserEditForm() {
                     <input
                      type="text"
                      className="w-full mt-1 p-2 border rounded-md"
-                     placeholder="세글만"
+                     placeholder={user?.name}
                     />
                 </div>
                 <div>
@@ -55,7 +82,7 @@ export function UserEditForm() {
                     <input
                      type="text"
                      className="w-full mt-1 p-2 border rounded-md"
-                     placeholder="tubeweb3"
+                     placeholder={user?.username}
                     />
                 </div>
                 <div>
@@ -63,28 +90,26 @@ export function UserEditForm() {
                     <input
                      type="email"
                      className="w-full mt-1 p-2 border rounded-md"
-                     placeholder="tubeweb3@gmail.com"
+                     placeholder={user?.email}
                     />
                 </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        생년월일(8자)
+                    <label className="block mb-4 text-sm font-medium text-gray-700">
+                        가입일
                     </label>
-                    <input
-                     type="text"
-                     className="w-full mt-1 p-2 border rounded-md"
-                     placeholder="예)19750101"
-                    />
+                    <span className="p-1 text-lg">
+                        {user?.regisDateTime}
+                    </span>
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700">휴대전화</label>
                     <input
                      type="tel"
                      className="w-full mt-1 p-2 border rounded-md"
-                     placeholder="010-3333-3333"
+                     placeholder={user?.number}
                     />
                 </div>
             </div>
@@ -111,7 +136,7 @@ export function UserEditForm() {
                 <div>
                     <label className="block text-sm font-medium text-gray-700">포인트</label>
                     <div className="mt-1 flex items-center">
-                        <span className="mr-4">1,580 Point</span>
+                        <span className="mr-4">{user?.point}</span>
                         <button className="bg-gray-300 py-1 px-1 text-xs rounded-md">변경</button>
                     </div>
                 </div>
