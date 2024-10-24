@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { SubmitButton } from "../custom/SubmitButton";
-import { SignUpAction, } from "@/app/actions/SignUpAction";
 import { useEffect, useState, } from "react";
 import CheckAuthAction from "@/app/actions/CheckAuthAction";
 import ReadUserByUsernameAction from "@/app/actions/ReadUserAction";
+import { DeleteUserService } from "@/app/service/DeleteUserService";
+import { UpdateUserAction } from "@/app/actions/UpdateUserAction";
 
 const INITIAL_STATE = {
   data: null,
@@ -14,7 +15,7 @@ const INITIAL_STATE = {
 
 export function UserEditForm(username : UserNameProps) {
     
-    /** 권한 확인 로직 */ 
+    /** 권한 확인 로직 */
     useEffect(() => {
         const checkauthStatus = async () => {            
             const CheckAuth = await CheckAuthAction();
@@ -50,9 +51,31 @@ export function UserEditForm(username : UserNameProps) {
         
         fetchUser();
     }, [username]);
+
+      /** 회원탈퇴 함수 */
+    const deleteID = async () => {
+        const confirmation = confirm("정말로 회원탈퇴를 진행하시겠습니까?"); // confirm 함수는 확인버튼을 누르면 true를 return
+        if (confirmation) {
+            try {
+                const result = await DeleteUserService(user?.username);
+                if(result === "삭제완료"){
+                    alert("회원탈퇴가 완료되었습니다.");
+                    window.location.href = "/admin/members";
+                }
+                else if(result !== "삭제완료"){
+                    alert("회원탈퇴에 실패했습니다. 다시 시도해주세요.")
+                    window.location.href = "/admin/members";
+                }
+            } catch (error) {
+                console.error("Error deleting user:", error);
+                alert("회원탈퇴에 실패했습니다. 다시 시도해주세요.");
+                window.location.href = "/admin/members";
+            }
+        }
+    };
     
     /** 회원정보 수정 page*/
-    const [formState, formAction] = useFormState(SignUpAction,INITIAL_STATE);
+    const [formState, formAction] = useFormState(UpdateUserAction,INITIAL_STATE);
     
     return (
     <form action={formAction}>
@@ -70,7 +93,10 @@ export function UserEditForm(username : UserNameProps) {
                     />
                 </div>
                 <div>
-                    <button className="mt-6 bg-red-500 text-white py-2 px-4 rounded-md">
+                    <button 
+                     className="mt-6 bg-red-500 text-white py-2 px-4 rounded-md"
+                     onClick={deleteID}
+                     >
                         회원탈퇴
                     </button>
                 </div>
@@ -86,7 +112,7 @@ export function UserEditForm(username : UserNameProps) {
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">E-Mail</label>
+                    <label className="block text-sm font-medium text-gray-700">이메일</label>
                     <input
                      type="email"
                      className="w-full mt-1 p-2 border rounded-md"
@@ -97,14 +123,6 @@ export function UserEditForm(username : UserNameProps) {
 
             <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                    <label className="block mb-4 text-sm font-medium text-gray-700">
-                        가입일
-                    </label>
-                    <span className="p-1 text-lg">
-                        {user?.regisDateTime}
-                    </span>
-                </div>
-                <div>
                     <label className="block text-sm font-medium text-gray-700">휴대전화</label>
                     <input
                      type="tel"
@@ -112,41 +130,31 @@ export function UserEditForm(username : UserNameProps) {
                      placeholder={user?.number}
                     />
                 </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">성별</label>
-                    <div className="mt-2 flex items-center space-x-4">
-                        <label className="flex items-center">
-                            <input
-                             type="radio"
-                             name="gender"
-                             className="form-radio text-blue-500"
-                             defaultChecked
-                            />
-                            <span className="ml-2">남자</span>
-                        </label>
-                        <label className="flex items-center">
-                            <input type="radio" name="gender" className="form-radio text-blue-500" />
-                            <span className="ml-2">여자</span>
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">포인트</label>
-                    <div className="mt-1 flex items-center">
-                        <span className="mr-4">{user?.point}</span>
-                        <button className="bg-gray-300 py-1 px-1 text-xs rounded-md">변경</button>
-                    </div>
-                </div>
+                    <label className="block text-sm font-medium text-gray-700">보유 포인트</label>
+                        <input
+                         type="tel"
+                         className="w-1/2 mt-1 p-2 border rounded-md"
+                         placeholder={user?.point}
+                        />
+                </div>           
             </div>
             
             <div>
-                <label className="block text-sm font-medium text-gray-700">권한</label>
-                <select className="w-1/4 mt-1 p-2 border rounded-md">
-                    <option>[1] 일반회원</option>
-                    <option>[2] 관리자</option>
+                <label className="block mb-0 text-sm font-medium text-gray-700">
+                    가입일
+                </label>
+                <span className="p-1 text-lg">
+                    {user?.regisDateTime}
+                </span>
+            </div>
+
+            <div>
+                <label className="block mt-3 text-sm font-medium text-gray-700">권한부여</label>
+                <select name="userRole" className="w-1/4 mt-1 p-2 border rounded-md">
+                    <option value="0"> [0] 미선택 </option>
+                    <option value="1"> [1] 일반회원 </option>
+                    <option value="2"> [2] 관리자 </option>
                 </select>
             </div>
             <div className="flex justify-center">

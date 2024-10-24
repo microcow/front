@@ -6,7 +6,7 @@ interface User {
     number?: string;
     regisDateTime?: string;
     address?: string;
-    point?: number;
+    point?: number | null;
     enabled?: boolean;
     credentialsNonExpired?: boolean;
     accountNonExpired?: boolean;

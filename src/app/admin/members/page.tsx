@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ReadUserListService } from "@/app/service/ReadUserService";
+import { ReadUserListService } from "@/app/service/readUserService";
 import { Button } from "@/components/ui/button";
 import Link from "next/dist/client/link";
 
@@ -67,10 +67,10 @@ export default function MembersPage() {
                <td className="border border-gray-300 p-1">{user.regisDateTime}</td>
                <td className="border border-gray-300 p-1">
                   <button
-                    className="underline hover:cursor-pointer"
+                    className="underline text-blue-500 hover:cursor-pointer"
                     onClick={() => openPopup(user.address ?? "null")}
                   >
-                    확인하기
+                    확인
                   </button>
                 </td>
                <td className="border border-gray-300 p-1">{user.point}</td>
