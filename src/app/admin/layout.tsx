@@ -26,13 +26,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         window.location.href = "/";
       }
       else {
-        setIsLoading(true); // 권한 확인 완료
+        setIsLoading(true);
       }
     };
     checkauthStatus();
   }, []);
 
-  if (!isLoading) { // 확인 전까지 null을 return
+  if (!isLoading) {
     return null;
   }
 
