@@ -2,41 +2,40 @@
 
 import { UpdateUserService, } from "../service/UpdateUserService";
 
-/* 회원가입 action */
+/* 유저정보 업데이트 action */
 export async function UpdateUserAction(prevState: any, formData: FormData) {
 
     // 업데이트 유저 정보 불러오기
-    const pointValue = formData.get("point");
+    if(formData.get("index") == null || formData.get("index") === "null"){
+      return "회원 정보를 불러오지 못했습니다."
+    }
 
     const user: User = { 
         username: (formData.get("username") as string) || "null", 
         name: (formData.get("name") as string) || "null",
         email: (formData.get("email") as string) || "null",
         number: (formData.get("number") as string) || "null",
-        point: formData.get("point") ? Number(formData.get("point")) : null,
+        point: (formData.get("point") as string) || "null",
+        auth: formData.get("userRole") as string || "0",
+        index: formData.get("index") as string
       };
 
-
-    // 업데이트 유저 권한 불러오기 (서버의 User클래스와 클라이언트 User타입에 "권한" 변수가 없기 때문에 따로 불러옴)
-    const userRole = formData.get("userRole") as string;
-
-    let roleUser : String;
-
-    if(userRole === "0"){
-        roleUser = "null"
+    // 권한 설정(변동이 있을 경우)
+    if(user.auth === "0"){
+      user.auth = "null"
     }
-    else if(userRole === "1"){
-        roleUser = "ROLE_USER"
+    else if(user.auth === "1"){
+      user.auth = "ROLE_USER"
     }
-    else if(userRole === "2"){
-        roleUser = "ROLE_ADMIN"
+    else if(user.auth === "2"){
+      user.auth = "ROLE_ADMIN"
     }
-    else roleUser = "null";
+    else user.auth = "null";
 
 
+  const responseData = await UpdateUserService(user);
 
-  const responseData = await UpdateUserService(user, userRole);
-
+  
   // 서버응답 실패로직
   if (!responseData) {
     console.log('server error', '서버 응답 없음')

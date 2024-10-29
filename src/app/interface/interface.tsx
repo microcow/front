@@ -1,12 +1,13 @@
 interface User {
-    index?: number;
+    index?: string;
     username?: string;
     name?: string;
     email?: string;
     number?: string;
     regisDateTime?: string;
     address?: string;
-    point?: number | null;
+    point?: string;
+    auth?: string;
     enabled?: boolean;
     credentialsNonExpired?: boolean;
     accountNonExpired?: boolean;

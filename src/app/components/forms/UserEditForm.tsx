@@ -90,6 +90,7 @@ export function UserEditForm(username : UserNameProps) {
                      type="text"
                      className="w-full mt-1 p-2 border rounded-md"
                      placeholder={user?.name}
+                     name="name"
                     />
                 </div>
                 <div>
@@ -109,6 +110,7 @@ export function UserEditForm(username : UserNameProps) {
                      type="text"
                      className="w-full mt-1 p-2 border rounded-md"
                      placeholder={user?.username}
+                     name="username"
                     />
                 </div>
                 <div>
@@ -117,6 +119,7 @@ export function UserEditForm(username : UserNameProps) {
                      type="email"
                      className="w-full mt-1 p-2 border rounded-md"
                      placeholder={user?.email}
+                     name="email"
                     />
                 </div>
             </div>
@@ -128,6 +131,7 @@ export function UserEditForm(username : UserNameProps) {
                      type="tel"
                      className="w-full mt-1 p-2 border rounded-md"
                      placeholder={user?.number}
+                     name="number"
                     />
                 </div>
                 <div>
@@ -136,8 +140,16 @@ export function UserEditForm(username : UserNameProps) {
                          type="tel"
                          className="w-1/2 mt-1 p-2 border rounded-md"
                          placeholder={user?.point}
+                         name="point"
                         />
-                </div>           
+                </div>
+                <div>
+                    <input
+                        type="hidden"
+                        name="index"
+                        value={user?.index}
+                    />
+                </div>          
             </div>
             
             <div>
