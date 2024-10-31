@@ -52,7 +52,7 @@ export function UserEditForm(username : UserNameProps) {
         fetchUser();
     }, [username]);
 
-      /** 회원탈퇴 함수 */
+    /** 회원탈퇴 함수 */
     const deleteID = async () => {
         const confirmation = confirm("정말로 회원탈퇴를 진행하시겠습니까?"); // confirm 함수는 확인버튼을 누르면 true를 return
         if (confirmation) {
@@ -76,6 +76,12 @@ export function UserEditForm(username : UserNameProps) {
     
     /** 회원정보 수정 page*/
     const [formState, formAction] = useFormState(UpdateUserAction,INITIAL_STATE);
+    
+        // 실행결과 메시지 출력
+    if(formState.message != null){ 
+        alert(formState.message);
+        window.location.href = "/admin/members";
+    }
     
     return (
     <form action={formAction}>

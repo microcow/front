@@ -1,7 +1,7 @@
 "use server"
 
 import { cookies } from "next/headers";
-import { ReadUserByUsernameService } from "../service/readUserService";
+import { ReadUserByUsernameService } from "../service/ReadUserService";
 
 export default async function ReadUserByUsernameAction(username : UserNameProps) {
 

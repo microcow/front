@@ -20,7 +20,7 @@ export async function UpdateUserAction(prevState: any, formData: FormData) {
         index: formData.get("index") as string
       };
 
-    // 권한 설정(변동이 있을 경우)
+    // 권한 설정
     if(user.auth === "0"){
       user.auth = "null"
     }

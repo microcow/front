@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 export default function userEditPage() {
 
     const searchParams = useSearchParams();
-    const username = searchParams.get("id") ?? "";
+    const username = searchParams.get("id") ?? ""; // url 쿼리에서 id값 가져오기
 
     if (username !== "") {
     return <UserEditForm username={username} />;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ReadUserListService } from "@/app/service/readUserService";
+import { ReadUserListService } from "@/app/service/ReadUserService";
 import { Button } from "@/components/ui/button";
 import Link from "next/dist/client/link";
 
