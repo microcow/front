@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 const baseUrl = "http://localhost:8080";
 
-export async function UpdateUserService(user :User,) {
+export async function AddCategoryService(catecory :Category,) {
 
   /** 쿠키 정보 검사 */
   const cookie = cookies().get("jwt")
@@ -12,7 +12,6 @@ export async function UpdateUserService(user :User,) {
     return "쿠키 정보가 없습니다."
   }
 
-  /** 서버 통신 */
   const url = new URL("/api/admin/updateUser", baseUrl);
 
   try {
@@ -22,7 +21,7 @@ export async function UpdateUserService(user :User,) {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${cookie.value}`,
       },
-      body: JSON.stringify( user ),
+      body: JSON.stringify( catecory ),
     });
     
       const contentType = response.headers.get("Content-Type");

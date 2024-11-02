@@ -28,3 +28,10 @@ interface SubmitButtonProps {
 interface UserNameProps {
     username: string;
   }
+
+interface Category {
+  code? : string;
+  lgcategory? : string;
+  smcategory? : string;
+  level? : string;
+}
