@@ -30,12 +30,8 @@ export async function DeleteUserService(username :string) {
     });
     
       const contentType = response.headers.get("Content-Type");
-
-      if (contentType && contentType.includes("application/json")) {
-        return await response.json();
-      } 
       
-      else if (contentType && contentType.includes("text/plain")) {
+      if (contentType && contentType.includes("text/plain")) {
         return await response.text();
       } 
       

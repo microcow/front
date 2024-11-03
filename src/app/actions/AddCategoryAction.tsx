@@ -1,17 +1,25 @@
 "use server";
 
 import { AddCategoryService } from "../service/AddCategoryService";
-import { UpdateUserService, } from "../service/UpdateUserService";
 
 /* 유저정보 업데이트 action */
 export async function AddCategoryAction(prevState: any, formData: FormData) {
 
-    const category: Category = { 
+    // 등록 카테고리 불러오기
+    const category: Category = {
         lgcategory: (formData.get("lgCategory") as string) || "null", 
-        level: (formData.get("categoryName") as string),
       };
 
-      console.log(category, "카테고리")
+      if(category.lgcategory === "미선택" || category.lgcategory === "null"){
+        category.level = "대분류"
+      }
+      else category.level = "소분류"
+
+      if(category.level === "대분류"){
+        category.lgcategory = (formData.get("categoryName") as string)
+      }
+      else category.smcategory = (formData.get("categoryName") as string)
+    //
 
   const responseData = await AddCategoryService(category);
   

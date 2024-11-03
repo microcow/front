@@ -48,7 +48,6 @@ export function UserEditForm(username : UserNameProps) {
             window.location.href = "/signin";
           }
         }
-        
         fetchUser();
     }, [username]);
 

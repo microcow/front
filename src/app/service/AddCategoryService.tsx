@@ -12,7 +12,7 @@ export async function AddCategoryService(catecory :Category,) {
     return "쿠키 정보가 없습니다."
   }
 
-  const url = new URL("/api/admin/updateUser", baseUrl);
+  const url = new URL("/api/admin/AddCategory", baseUrl);
 
   try {
     const response = await fetch(url, {  
