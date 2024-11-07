@@ -27,21 +27,23 @@ export async function ReadlgCategoryService() {
     
       const contentType = response.headers.get("Content-Type");
 
-      if (contentType && contentType.includes("application/json")) {
-        return await response.json();
-      } 
+      if (response.status === 200) {
+        if (contentType && contentType.includes("application/json")) {
+          return await response.json();
+        }
+      }
       
       else if (contentType && contentType.includes("text/plain")) {
         return await response.text();
       } 
       
       else {
-        return response;
+        return "오류가 발생했습니다. 다시 시도해주세요";
       }
     
     } catch (error) {
     console.error("Registration Service Error:", error);
-    return null;
+    return "오류가 발생했습니다. 다시 시도해주세요";
   }
 
 }

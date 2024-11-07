@@ -21,11 +21,14 @@ export function CategoriesEditForm() {
         async function fetchCategory() {
           try {
             const categoryResult = await ReadlgCategoryService();
-            if (categoryResult.status !== 200) {
-              alert(categoryResult.body || "정보를 불러오지 못했습니다. 다시 로그인해주세요.");
+
+            if (typeof categoryResult === 'string') {
+              alert(categoryResult);
               window.location.href = "/signin";
-          } else {
-              setCategoryList(categoryResult.data);
+              return;
+          }
+            else {
+              setCategoryList(categoryResult);
           }
           } catch (error) {
               console.error("Error fetching user data:", error);
